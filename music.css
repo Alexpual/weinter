@@ -1,0 +1,244 @@
+body{
+  background: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.8)),url(art/ale.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+   min-height: 100vh;
+
+  }
+
+  .audio{
+    justify-items: center;
+  }
+
+  img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    justify-items: center;
+  }
+
+  .img{
+    justify-items: center;
+  }
+  header{
+    text-align: right
+  }
+
+h1{
+ background-color: red;
+  color:transparent;
+  background-clip: text;
+  text-align:center;
+  animation: h1 2s linear infinite;
+}
+
+@keyframes h1 {
+  0%{background: linear-gradient(45deg,black,red,purple,blue,green,yellow);
+    color:transparent;
+    background-clip: text;}
+  30%{background: linear-gradient(45deg,green,purple,white,blue,red,yellow);
+    color:transparent;
+    background-clip: text;}
+  50%{background: linear-gradient(45deg,purple,blue,green,yellow);
+    color:transparent;
+    background-clip: text;}
+  70%{background: linear-gradient(45deg,blue,green,yellow);
+    color:transparent;
+    background-clip: text;}
+  100%{background: linear-gradient(45deg,black,green,yellow);
+    color:transparent;
+    background-clip: text;}
+}
+
+p{
+  color: white;
+}
+
+button{
+  background:linear-gradient(45deg,red,blue,red,green,orange);
+  color: transparent;
+  background-clip: text;
+  border-radius: 50px;
+  background-size: 150%;
+  font-size: 15pt;
+  font-weight: 900;
+  animation: btn 2s linear infinite,buttonbackground 2s  linear infinite;
+}
+
+@keyframes btn {
+  0%{box-shadow: 0 0 50px blue;}
+  25%{box-shadow: 0 0 50px yellow;}
+  50%{box-shadow: 0 0 50px aqua; }
+  75%{box-shadow: 0 0 50px red;}
+  100%{box-shadow: 0 0 50px blue;}
+  
+}
+
+@keyframes buttonbackground {
+  0%{background-position:0% 50%;}
+  50%{background-position: 100% 50% }
+  100%{background-position: 0% 50%}
+}
+
+nav{
+  text-align: center;
+  justify-items: center;
+}
+
+ul{
+  list-style-type: none;
+  display: flex;
+  gap: 0.2rem;
+}
+
+
+
+p{
+  text-align: center;
+}
+
+    .search-section {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      margin: 30px 0;
+      text-align: center;
+    }
+    
+    .search-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #4a6cf7;
+    }
+    
+    .search-container {
+      display: flex;
+      margin: 0 auto 20px;
+      border-radius: 50px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      max-width: 700px;
+    }
+    
+    .search-input {
+      flex: 1;
+      padding: 16px 24px;
+      font-size: 16px;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      outline: none;
+    }
+    
+    .search-button {
+      padding: 16px 28px;
+      background: #4a6cf7;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    
+    .search-button:hover {
+      background: #3b5be3;
+    }
+    
+    .platform-selector {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .platform-btn {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    
+    .platform-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+  
+    .platform-btn.active {
+      background: #4a6cf7;
+    }
+    
+    .platform-btn i {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+    
+    .youtube-btn.active { background: #FF0000; }
+    .facebook-btn.active { background: #1877F2; }
+    .google-btn.active { background: #4285F4; }
+    .tiktok-btn.active { background: #000000; }
+    
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    
+    .button-group a {
+      text-decoration: none;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .search-container {
+        flex-direction: column;
+        border-radius: 15px;
+      }
+      
+      .search-input {
+        border-radius: 15px 15px 0 0;
+      }
+      
+      .search-button {
+        border-radius: 0 0 15px 15px;
+      }
+      
+      .platform-selector {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .platform-btn {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+  
+

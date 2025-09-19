@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Music Player</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #fff;
+        transition: background 0.3s, color 0.3s;
+    }
+    body.light-mode {
+        background: #fff;
+        color: #000;
+    }
+    .player-container {
+        max-width: 420px;
+        margin: auto;
+        text-align: center;
+        padding: 20px;
+    }
+    .cover img {
+        width: 100%;
+        border-radius: 15px;
+    }
+    .song-title {
+        font-size: 18px;
+        margin: 15px 0;
+    }
+    .progress-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+    }
+    .progress-bar {
+        flex: 1;
+        margin: 0 10px;
+        height: 5px;
+        background: #333;
+        border-radius: 5px;
+        position: relative;
+    }
+    .progress {
+        height: 100%;
+        background: #ffcc00;
+        width: 0%;
+        border-radius: 5px;
+    }
+    .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin: 15px 0;
+    }
+    .controls button {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 22px;
+        cursor: pointer;
+    }
+    .volume-speed {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+    }
+    .volume-speed input[type="range"] {
+        width: 120px;
+    }
+    .equalizer {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        height: 30px;
+        gap: 5px;
+        margin: 10px 0;
+    }
+    .bar {
+        width: 5px;
+        background: #ffcc00;
+        animation: bounce 1s infinite ease-in-out;
+    }
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+    .bar:nth-child(4) { animation-delay: 0.6s; }
+    .bar:nth-child(5) { animation-delay: 0.8s; }
+    @keyframes bounce {
+        0%, 100% { height: 5px; }
+        50% { height: 30px; }
+    }
+    .playlist {
+        text-align: left;
+        margin-top: 20px;
+    }
+    .playlist h3 {
+        margin-bottom: 10px;
+    }
+    .song {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0;
+        cursor: pointer;
+    }
+    .song img {
+        width: 50px;
+        border-radius: 8px;
+    }
+    .song-title-small {
+        font-size: 14px;
+        color: #ccc;
+    }
+    .play-all {
+        background: #ffcc00;
+        color: black;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 25px;
+        font-weight: bold;
+        float: right;
+        cursor: pointer;
+    }
+    .options {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+    }
+    .options button {
+        background: #ffcc00;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="player-container">
+    <div class="cover">
+        <img id="coverImage" src="https://i.postimg.cc/wvW38XbN/guc.jpg" alt="Cover">
+    </div>
+    <div class="song-title" id="songTitle">Minister GUC - Captured My Heart</div>
+    
+    <div class="equalizer" id="equalizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    
+    <div class="progress-container">
+        <span id="currentTime">00:00</span>
+        <div class="progress-bar" id="progressBar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <span id="totalDuration">00:00</span>
+    </div>
+    
+    <div class="controls">
+        <button id="shuffleBtn">🔀</button>
+        <button id="prevBtn">⏮</button>
+        <button id="playPauseBtn">▶</button>
+        <button id="nextBtn">⏭</button>
+        <button id="repeatBtn">🔁</button>
+    </div>
+    
+    <div class="volume-speed">
+        <label>Volume: <input type="range" id="volume" min="0" max="1" step="0.01"></label>
+        <label>Speed:
+            <select id="speed">
+                <option value="0.5">0.5x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="options">
+        <button id="downloadBtn">⬇ Download</button>
+        <button id="toggleTheme">🌗 Mode</button>
+    </div>
+
+    <div class="playlist">
+        <h3>All songs <button class="play-all" id="playAllBtn">Play All</button></h3>
+        <div class="song" data-index="0">
+            <img src="https://i.postimg.cc/wvW38XbN/guc.jpg">
+            <div class="song-title-small">Captured My Heart</div>
+        </div>
+        <div class="song" data-index="1">
+            <img src="https://i.postimg.cc/ydZfMLhc/guc2.jpg">
+            <div class="song-title-small">Obinigwe Cover</div>
+        </div>
+        <div class="song" data-index="2">
+            <img src="https://i.postimg.cc/TwLk4qKg/guc3.jpg">
+            <div class="song-title-small">Debut Album Talk</div>
+        </div>
+    </div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const songs = [
+    {
+        title: "Minister GUC - Captured My Heart",
+        src: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", // 🔥 Replace this with your first audio URL
+        cover: "https://i.postimg.cc/wvW38XbN/guc.jpg"
+    },
+    {
+        title: "Minister GUC - Obinigwe Cover",
+        src: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", // 🔥 Replace this with your second audio URL
+        cover: "https://i.postimg.cc/ydZfMLhc/guc2.jpg"
+    },
+    {
+        title: "Minister GUC talks debut album",
+        src: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", // 🔥 Replace this with your third audio URL
+        cover: "https://i.postimg.cc/TwLk4qKg/guc3.jpg"
+    }
+];
+
+let currentSongIndex = 0;
+let isShuffling = false;
+let isRepeating = false;
+
+const audio = document.getElementById('audio');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const repeatBtn = document.getElementById('repeatBtn');
+const progressBar = document.getElementById('progressBar');
+const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('currentTime');
+const totalDurationEl = document.getElementById('totalDuration');
+const coverImage = document.getElementById('coverImage');
+const songTitle = document.getElementById('songTitle');
+const playAllBtn = document.getElementById('playAllBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const toggleTheme = document.getElementById('toggleTheme');
+const volumeSlider = document.getElementById('volume');
+const speedSelect = document.getElementById('speed');
+const equalizer = document.getElementById('equalizer');
+
+function loadSong(index) {
+    const song = songs[index];
+    audio.src = song.src;
+    songTitle.textContent = song.title;
+    coverImage.src = song.cover;
+    downloadBtn.setAttribute('onclick', `window.open('${song.src}')`);
+}
+
+function playSong() {
+    audio.play();
+    playPauseBtn.textContent = "⏸";
+    equalizer.style.display = "flex";
+}
+
+function pauseSong() {
+    audio.pause();
+    playPauseBtn.textContent = "▶";
+    equalizer.style.display = "none";
+}
+
+playPauseBtn.addEventListener('click', () => {
+    audio.paused ? playSong() : pauseSong();
+});
+
+prevBtn.addEventListener('click', () => {
+    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    loadSong(currentSongIndex);
+    playSong();
+});
+
+nextBtn.addEventListener('click', nextTrack);
+
+shuffleBtn.addEventListener('click', () => {
+    isShuffling = !isShuffling;
+    shuffleBtn.style.color = isShuffling ? "#ffcc00" : "";
+});
+
+repeatBtn.addEventListener('click', () => {
+    isRepeating = !isRepeating;
+    repeatBtn.style.color = isRepeating ? "#ffcc00" : "";
+});
+
+audio.addEventListener('ended', () => {
+    if (isRepeating) {
+        playSong();
+    } else {
+        nextTrack();
+    }
+});
+
+function nextTrack() {
+    if (isShuffling) {
+        currentSongIndex = Math.floor(Math.random() * songs.length);
+    } else {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+    }
+    loadSong(currentSongIndex);
+    playSong();
+}
+
+audio.addEventListener('loadedmetadata', () => {
+    totalDurationEl.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener('timeupdate', () => {
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+    progress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+});
+
+progressBar.addEventListener('click', (e) => {
+    const width = progressBar.clientWidth;
+    const clickX = e.offsetX;
+    audio.currentTime = (clickX / width) * audio.duration;
+});
+
+volumeSlider.addEventListener('input', () => {
+    audio.volume = volumeSlider.value;
+});
+
+speedSelect.addEventListener('change', () => {
+    audio.playbackRate = parseFloat(speedSelect.value);
+});
+
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins < 10 ? '0'+mins : mins}:${secs < 10 ? '0'+secs : secs}`;
+}
+
+document.querySelectorAll('.song').forEach(songEl => {
+    songEl.addEventListener('click', () => {
+        currentSongIndex = parseInt(songEl.dataset.index);
+        loadSong(currentSongIndex);
+        playSong();
+    });
+});
+
+playAllBtn.addEventListener('click', () => {
+    currentSongIndex = 0;
+    loadSong(currentSongIndex);
+    playSong();
+});
+
+toggleTheme.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+});
+
+loadSong(currentSongIndex);
+</script>
+</body>
+</html>

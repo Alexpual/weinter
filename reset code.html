@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>verification code</title>
+    <link rel="stylesheet" href="reset code.css">
+</head>
+<body>
+	<center>
+    <div class="reset-box">
+      <h1>web Enter<sup>&COPY;</sup></h1>
+      <p>we will send Eight(8) digit code to your device please stay camel</p>
+      <p>Enter reset code we have send</p>
+      <div class="code-box">
+      <input type="password" id="pwd" class="input" name="password" required="required" placeholder="xxxx-xxxx">
+      <input type="checkbox" onclick="pwd.type= this.checked ? 'text' : 'password'">
+      <br>
+      <div id="timer">
+       <span> wait for:</span>
+        <script>
+            let timeLeft = 60; // 1 minute in seconds
+            let timer = document.getElementById('timer');
+    
+            function countdown() {
+                let seconds = timeLeft;
+    
+                timer.innerHTML = `00:${seconds.toString().padStart(2, '0')}`;
+    
+                if (timeLeft > 0) {
+                    timeLeft--;
+                } else {
+                    timer.innerHTML = "00:00";
+                    clearInterval(interval);
+                }
+            }
+    
+            let interval = setInterval(countdown, 1000);
+        </script>
+      </div>
+      <p>i didn't receive the code: <a href="">Resend ?</a></p>
+      </div>
+    </div>
+    </center>
+      <table>
+        <tr>
+            <td>
+                <span>send using SMS:</span>
+                <input type="radio">
+                <br><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>send using <i class="fa fa-whatsapp" aria-hidden="true">whatsapp</i>:</span>
+                <input type="radio">
+                <br><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>send using Email:</span>
+                <input type="radio">
+            </td>
+        </tr>
+      </table>
+</body>
+</html>

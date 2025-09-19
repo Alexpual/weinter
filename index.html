@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staterpack</title>
+  <style>
+    /* Reset & Base */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',system-ui,Arial,sans-serif}
+    body{
+      background:linear-gradient(rgba(0,0,0,.7),rgba(0,0,0,.7)),url('staterparkpic.jpg') center/cover no-repeat fixed;
+      color:#fff;min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;
+      transition:.5s ease-in-out;overflow-x:hidden
+    }
+
+    /* Particles canvas sits behind everything */
+    #particles{
+      position:fixed;inset:0;z-index:-1;pointer-events:none;display:block
+    }
+
+    /* Loader */
+    #loader{
+      position:fixed;inset:0;background:#000;color:#fff;display:flex;justify-content:center;align-items:center;
+      font-size:30px;font-weight:700;z-index:9999
+    }
+
+    header{text-align:center;padding:30px;position:relative}
+    header h1{font-size:3rem;color:#00f;text-shadow:2px 2px 10px #000;animation:fadeInDown 1s ease}
+    @keyframes fadeInDown{0%{transform:translateY(-50px);opacity:0}100%{transform:translateY(0);opacity:1}}
+
+    .description{
+      background:rgba(128,0,128,.8);padding:20px;margin:20px auto;max-width:700px;border-radius:15px;text-align:center;
+      box-shadow:0 5px 15px rgba(0,0,0,.5)
+    }
+    .description p{font-size:18px;line-height:1.6}
+
+    .btn-container{text-align:center;margin:20px}
+    button{
+      font-size:20px;font-weight:700;border-radius:12px;background:#28a745;color:#fff;padding:12px 25px;margin:10px;border:none;cursor:pointer;transition:.3s
+    }
+    button:hover{background:#218838;transform:scale(1.08)}
+
+    /* Theme toggle + live clock badge */
+    .top-right{
+      position:fixed;top:16px;right:16px;display:flex;gap:10px;z-index:10
+    }
+    .theme-toggle,.clock{
+      background:#ffcc00;color:#000;border-radius:10px;padding:10px 14px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.25)
+    }
+    .theme-toggle{cursor:pointer;user-select:none}
+    .clock{font-variant-numeric:tabular-nums}
+
+    footer{text-align:center;padding:20px;background:rgba(0,0,0,.7)}
+    footer p{margin-bottom:10px}
+    .social-icons a{color:#fff;margin:0 10px;font-size:24px;text-decoration:none;transition:.3s}
+    .social-icons a:hover{color:#ffcc00}
+
+    /* Dark (light-mode toggled on body) */
+    body.light-mode{background:#f4f4f4;color:#222}
+    body.light-mode .description{background:#fff;color:#000}
+    body.light-mode footer{background:#e9e9e9}
+    body.light-mode .theme-toggle{background:#333;color:#fff}
+    body.light-mode .clock{background:#111;color:#fff}
+
+    /* Music Player */
+    .music-player{
+      position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,.7);padding:10px 20px;border-radius:15px;display:flex;align-items:center;gap:15px;
+      box-shadow:0 4px 10px rgba(0,0,0,.5);backdrop-filter:blur(3px)
+    }
+    .music-player button{
+      background:#ffcc00;color:#000;font-size:18px;border-radius:50%;width:50px;height:50px;border:none;cursor:pointer
+    }
+    .equalizer{display:flex;gap:3px;align-items:flex-end;height:30px}
+    .bar{width:4px;background:#ffcc00;animation:bounce 1s infinite ease-in-out}
+    .bar:nth-child(2){animation-delay:.2s}.bar:nth-child(3){animation-delay:.4s}.bar:nth-child(4){animation-delay:.6s}
+    @keyframes bounce{0%,100%{height:5px}50%{height:30px}}
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important;transition:none !important}
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Particles background -->
+  <canvas id="particles"></canvas>
+
+  <!-- Loader -->
+  <div id="loader">Loading...</div>
+
+  <!-- Theme toggle + LIVE CLOCK -->
+  <div class="top-right">
+    <div class="clock" id="liveClock">--:--:--</div>
+    <div class="theme-toggle" onclick="toggleTheme()">☀ Light Mode</div>
+  </div>
+
+  <header>
+    <h1>Web Inter<sup>©</sup></h1>
+  </header>
+
+  <div class="description">
+    <p>Welcome to our website! We aim to entertain you with music, videos, dramas, sports, clips, films, pictures, and more. Enjoy the best content right here!</p>
+  </div>
+
+  <div class="btn-container">
+    <em><p>If you don't have bundle, press:</p></em>
+    <a href="index offline.html"><button onclick="offline()">Go Offline</button></a><br>
+    <em><p>If you have bundle, press:</p></em>
+    <a href="log in.html"><button onclick="online()">Go Online</button></a>
+  </div>
+
+  <footer>
+    <p>Connect with us:</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2025 Web Inter. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Music Player -->
+  <div class="music-player">
+    <button id="playBtn"><i class="fas fa-play"></i></button>
+    <div class="equalizer" id="equalizer">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+    <audio id="bgMusic" src="background.mp3" loop></audio>
+  </div>
+
+  <script>
+    /* ===== Loader ===== */
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
+    });
+
+    /* ===== Theme Toggle ===== */
+    function toggleTheme(){
+      document.body.classList.toggle('light-mode');
+      document.querySelector('.theme-toggle').textContent =
+        document.body.classList.contains('light-mode') ? '🌙 Dark Mode' : '☀ Light Mode';
+    }
+
+    /* ===== Alerts ===== */
+    function offline(){ alert('You will still use the website but with limited features.'); }
+    function online(){ alert('Congratulations! You will get full access to all features once you log in.'); }
+
+    /* ===== Music Player ===== */
+    const playBtn = document.getElementById('playBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    const equalizer = document.getElementById('equalizer');
+    let isPlaying = false;
+
+    playBtn.addEventListener('click', () => {
+      if(isPlaying){ bgMusic.pause(); playBtn.innerHTML = '<i class="fas fa-play"></i>'; equalizer.style.visibility = 'hidden'; }
+      else{ bgMusic.play(); playBtn.innerHTML = '<i class="fas fa-pause"></i>'; equalizer.style.visibility = 'visible'; }
+      isPlaying = !isPlaying;
+    });
+    equalizer.style.visibility = 'hidden';
+
+    /* ===== Live Clock (local time) ===== */
+    function updateClock(){
+      const now = new Date();
+      // Format as HH:MM:SS (24h)
+      const hh = String(now.getHours()).padStart(2,'0');
+      const mm = String(now.getMinutes()).padStart(2,'0');
+      const ss = String(now.getSeconds()).padStart(2,'0');
+      document.getElementById('liveClock').textContent = `${hh}:${mm}:${ss}`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ===== Particles Background ===== */
+    (function(){
+      const c = document.getElementById('particles');
+      const ctx = c.getContext('2d');
+      let w, h, dpr, particles, mouse = { x: -9999, y: -9999 }, rafId;
+
+      function resize(){
+        dpr = window.devicePixelRatio || 1;
+        w = c.width = Math.floor(window.innerWidth * dpr);
+        h = c.height = Math.floor(window.innerHeight * dpr);
+        c.style.width = window.innerWidth + 'px';
+        c.style.height = window.innerHeight + 'px';
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.scale(dpr,dpr);
+        initParticles();
+      }
+
+      function initParticles(){
+        const count = Math.min(140, Math.floor((window.innerWidth * window.innerHeight)/12000));
+        particles = Array.from({length: count}).map(() => ({
+          x: Math.random()*window.innerWidth,
+          y: Math.random()*window.innerHeight,
+          vx: (Math.random()-.5)*0.6,
+          vy: (Math.random()-.5)*0.6,
+          r: Math.random()*1.8 + 0.6,
+          a: Math.random()*0.5 + 0.5
+        }));
+      }
+
+      function step(){
+        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+
+        // draw + move particles
+        for(const p of particles){
+          p.x += p.vx; p.y += p.vy;
+
+          // wrap around edges
+          if(p.x < -5) p.x = window.innerWidth+5;
+          if(p.x > window.innerWidth+5) p.x = -5;
+          if(p.y < -5) p.y = window.innerHeight+5;
+          if(p.y > window.innerHeight+5) p.y = -5;
+
+          // slight mouse repulsion
+          const dx = p.x - mouse.x, dy = p.y - mouse.y, dist2 = dx*dx + dy*dy;
+          if(dist2 < 120*120){
+            const f = 120/Math.max(40, Math.sqrt(dist2));
+            p.vx += (dx/2000)*f; p.vy += (dy/2000)*f;
+          }
+
+          // draw particle
+          ctx.globalAlpha = p.a;
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        // connect near particles with faint lines
+        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+        for(let i=0;i<particles.length;i++){
+          for(let j=i+1;j<particles.length;j++){
+            const a = particles[i], b = particles[j];
+            const dx = a.x-b.x, dy = a.y-b.y, d2 = dx*dx + dy*dy;
+            if(d2 < 110*110){
+              ctx.globalAlpha = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        rafId = requestAnimationFrame(step);
+      }
+
+      // honor reduced-motion: pause animation
+      const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function start(){ cancelAnimationFrame(rafId); rafId = requestAnimationFrame(step); }
+      function stop(){ cancelAnimationFrame(rafId); ctx.clearRect(0,0,window.innerWidth,window.innerHeight); }
+
+      resize(); start();
+      window.addEventListener('resize', resize);
+      window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      media.addEventListener?.('change', () => media.matches ? stop() : start());
+      if(media.matches) stop();
+    })();
+  </script>
+</body>
+</html>

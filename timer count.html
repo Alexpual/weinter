@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Countdown Timer</title>
+	<style>
+		#timer {
+			font-size: 48px;
+			font-weight: bold;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="timer"></div>
+
+	<script>
+		
+		letcodeSent=false;
+lettimer=null;
+app.post('/send-code',(req,res)=>{
+if(codeSent){
+returnres.status(400).json ({message: 'Pleasewaitfor1minutebeforerequestinganothercode'})
+};
+
+//Generateandsendcodetoclient
+constcode=Math.floor(100000+Math.random()*900000);
+//SendcodetoclientviaSMSoremail
+codeSent=true;
+timer=setTimeout(()=>{
+codeSent=false;
+},60000);//1minute
+res.json({message:'Codesentsuccessfully'});
+});
+	</script>
+</body>
+</html>

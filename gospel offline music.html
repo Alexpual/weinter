@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Inter©- Music Player</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url(pic2.jpg);
+        color: #fff;
+        transition: background 0.3s, color 0.3s;
+    }
+    body.light-mode {
+        background: linear-gradient(rgba(0,0,0,0.003),rgba(0,0,0,0.003)),url(pic2.jpg);
+        color: #fff;
+    }
+    .player-container {
+        max-width: 420px;
+        margin: auto;
+        text-align: center;
+        padding: 20px;
+    }
+    .cover img {
+        width: 80%;
+        height:35%;
+        border-radius: 50%;
+        animation:spin 30s linear infinite;
+    }
+    
+    @keyframes spin{
+         to{transform: rotate(360deg);}
+     }
+    .song-title {
+        font-size: 18px;
+        margin: 15px 0;
+    }
+    .progress-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+    }
+    .progress-bar {
+        flex: 1;
+        margin: 0 10px;
+        height: 5px;
+        background: #333;
+        border-radius: 5px;
+        position: relative;
+    }
+    .progress {
+        height: 100%;
+        background: #ffcc00;
+        width: 0%;
+        border-radius: 5px;
+    }
+    .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin: 15px 0;
+    }
+    .controls button {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 22px;
+        cursor: pointer;
+    }
+    .volume-speed {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+    }
+    .volume-speed input[type="range"] {
+        width: 120px;
+    }
+    .equalizer {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        height: 30px;
+        gap: 5px;
+        margin: 10px 0;
+    }
+    .bar {
+        width: 5px;
+        background: #ffcc00;
+        animation: bounce 1s infinite ease-in-out;
+    }
+    .bar:nth-child(2) { animation-delay: 0.2s; }
+    .bar:nth-child(3) { animation-delay: 0.4s; }
+    .bar:nth-child(4) { animation-delay: 0.6s; }
+    .bar:nth-child(5) { animation-delay: 0.8s; }
+    @keyframes bounce {
+        0%, 100% { height: 5px; }
+        50% { height: 30px; }
+    }
+    .playlist {
+        text-align: left;
+        margin-top: 20px;
+    }
+    .playlist h3 {
+        margin-bottom: 10px;
+    }
+    .song {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0;
+        cursor: pointer;
+    }
+    .song img {
+        width: 50px;
+        border-radius: 8px;
+    }
+    .song-title-small {
+        font-size: 14px;
+        color: #ccc;
+    }
+    .play-all {
+        background: #ffcc00;
+        color: black;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 25px;
+        font-weight: bold;
+        float: right;
+        cursor: pointer;
+    }
+    .options {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+    }
+    .options button {
+        background: #ffcc00;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="player-container">
+    <div class="cover">
+        <img id="coverImage" alt="Cover">
+    </div>
+    <div class="song-title" id="songTitle"></div>
+    
+    <div class="equalizer" id="equalizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    
+    <div class="progress-container">
+        <span id="currentTime">00:00</span>
+        <div class="progress-bar" id="progressBar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <span id="totalDuration">00:00</span>
+    </div>
+    
+    <div class="controls">
+        <button id="shuffleBtn">🔀</button>
+        <button id="prevBtn">⏮️</button>
+        <button id="playPauseBtn">▶️</button>
+        <button id="nextBtn">⏭️</button>
+        <button id="repeatBtn">🔁</button>>
+    </div>
+    
+    <div class="volume-speed">
+        <label>Volume: <input type="range" id="volume" min="0" max="1" step="0.01"></label>
+        <label>Speed:
+            <select id="speed">
+                <option value="0.5">0.5x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="options">
+       <button id="downloadBtn">⬇ Download</button>
+        <button id="toggleTheme">🌗 Mode</button>
+    </div>
+
+    <div class="playlist">
+        <h3>All songs <button class="play-all" id="playAllBtn">Play All</button></h3>
+        <div class="song" data-index="0">
+            <img src="art/ale.jpg">
+            <div class="song-title-small">Beracah  Lawyer.mp3</div>
+        </div>
+        <div class="song" data-index="1">
+            <img src="art/ale2.jpg">
+            <div class="song-title-small">Beracah - M'manja Mwanu</div>
+        </div>
+        <div class="song" data-index="2">
+            <img src="art/ale3.jpg">
+            <div class="song-title-small">Beracah - Mukhale.mp3</div>
+        </div>
+          <div class="song" data-index="3">
+            <img src="art/ale4.jpg">
+            <div class="song-title-small">Beracah - Ndineneko.mp3</div>
+        </div>
+          <div class="song" data-index="4">
+            <img src="art/ale5.jpg">
+            <div class="song-title-small">Beracah - Welenga.mp3</div>
+        </div>
+          <div class="song" data-index="5">
+            <img src="art/ale6.jpg">
+            <div class="song-title-small">Beracah Chifupi Nanu.mp3</div>
+        </div>
+          <div class="song" data-index="7">
+            <img src="art/ale7.jpg">
+            <div class="song-title-small">Beracah_-_Nditsamile.mp3</div>
+        </div>
+          <div class="song" data-index="8">
+            <img src="art/ale8.jpg">
+            <div class="song-title-small">Beracah_-_Tambala.mp3</div>
+        </div>
+          <div class="song" data-index="9">
+            <img src="art/ale9.jpg">
+            <div class="song-title-small">Beracah-listen.mp3</div>
+        </div>
+          <div class="song" data-index="10">
+            <img src="art/ale10.jpg">
+            <div class="song-title-small">Beracah-Mbembembe.mp3</div>
+        </div>
+          <div class="song" data-index="11">
+            <img src="art/ale11.jpg">
+            <div class="song-title-small">Beracah-Mtima_Mutenge.mp3</div>
+        </div>
+          <div class="song" data-index="12">
+            <img src="art/ale12.jpg">
+            <div class="song-title-small">Beracah-Uziiwale.mp3</div>
+        </div>
+          <div class="song" data-index="13">
+            <img src="art/ale13.jpg">
+            <div class="song-title-small">Beracah-Yesu Wanga.mp3</div>
+        </div>
+          <div class="song" data-index="14">
+            <img src="art/ale14.jpg">
+            <div class="song-title-small">Pompi_silence.mp3</div>
+        </div>
+    </div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const songs = [
+       { title:"Beracah  Lawyer.mp3", 
+      artist:"Beracah  Lawyer", 
+     src:"offline music/allan b/Beracah  Lawyer.mp3", cover:"art/ale.jpg" },
+    { title:"Beracah - M'manja Mwanu", 
+      artist:"Beracah ", 
+     src:"offline music/allan b/Beracah - M'manja Mwanu.mp3", cover:"art/ale2.jpg" },
+    { title:"Beracah - Mukhale.mp3", artist:"Beracah", src:"offline music/allan b/Beracah - Mukhale.mp3", cover:"art/ale14.jpg" },
+    { title:"Beracah - Ndineneko.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah - Ndineneko.mp3", cover:"art/ale3.jpg" },
+    { title:"Beracah - Welenga.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah - Welenga.mp3", cover:"art/ale4.jpg" },
+    { title:"Beracah Chifupi Nanu.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah Chifupi Nanu.mp3", cover:"art/ale5.jpg" },
+    { title:"Beracah_-_Nditsamile.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah_-_Nditsamile.mp3", cover:"art/ale6.jpg" },
+    { title:"Beracah_-_Tambala.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah_-_Tambala.mp3", cover:"art/ale7.jpg" },
+    { title:"Beracah-listen.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah-listen.mp3", cover:"art/ale8.jpg" },
+    { title:"Beracah-Mbembembe.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah-Mbembembe.mp3", cover:"art/ale9.jpg" },
+    { title:"Beracah-Mtima_Mutenge.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah-Mtima_Mutenge.mp3", cover:"art/ale10.jpg" },
+    { title:"Beracah-Uziiwale.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah-Uziiwale.mp3", cover:"art/ale11.jpg" },
+    { title:"Beracah-Yesu Wanga.mp3",  artist:"Beracah", src:"offline music/allan b/Beracah-Yesu Wanga.mp3", cover:"art/ale12.jpg" },
+    { title:"Pompi_silence.mp3",  artist:"Beracah", src:"offline music/allan b/Pompi_silence.mp3", cover:"art/ale13.jpg" },
+    
+];
+
+let currentSongIndex = 0;
+let isShuffling = false;
+let isRepeating = false;
+
+const audio = document.getElementById('audio');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const shuffleBtn = document.getElementById('shuffleBtn');
+const repeatBtn = document.getElementById('repeatBtn');
+const progressBar = document.getElementById('progressBar');
+const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('currentTime');
+const totalDurationEl = document.getElementById('totalDuration');
+const coverImage = document.getElementById('coverImage');
+const songTitle = document.getElementById('songTitle');
+const playAllBtn = document.getElementById('playAllBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const toggleTheme = document.getElementById('toggleTheme');
+const volumeSlider = document.getElementById('volume');
+const speedSelect = document.getElementById('speed');
+const equalizer = document.getElementById('equalizer');
+
+function loadSong(index) {
+    const song = songs[index];
+    audio.src = song.src;
+    songTitle.textContent = song.title;
+    coverImage.src = song.cover;
+    downloadBtn.setAttribute('onclick', `window.open('${song.src}')`);
+}
+
+function playSong() {
+    audio.play();
+    playPauseBtn.textContent = "⏸";
+    equalizer.style.display = "flex";
+}
+
+function pauseSong() {
+    audio.pause();
+    playPauseBtn.textContent = "▶️";
+    equalizer.style.display = "none";
+}
+
+playPauseBtn.addEventListener('click', () => {
+    audio.paused ? playSong() : pauseSong();
+});
+
+prevBtn.addEventListener('click', () => {
+    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    loadSong(currentSongIndex);
+    playSong();
+});
+
+nextBtn.addEventListener('click', nextTrack);
+
+shuffleBtn.addEventListener('click', () => {
+    isShuffling = !isShuffling;
+    shuffleBtn.style.color = isShuffling ? "#ffrr00" : "";
+});
+
+repeatBtn.addEventListener('click', () => {
+    isRepeating = !isRepeating;
+    repeatBtn.style.color = isRepeating ? "#ffcc00"  : "";
+});
+
+audio.addEventListener('ended', () => {
+    if (isRepeating) {
+        playSong();
+    } else {
+        nextTrack();
+    }
+});
+
+function nextTrack() {
+    if (isShuffling) {
+        currentSongIndex = Math.floor(Math.random() * songs.length);
+    } else {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+    }
+    loadSong(currentSongIndex);
+    playSong();
+}
+
+audio.addEventListener('loadedmetadata', () => {
+    totalDurationEl.textContent = formatTime(audio.duration);
+});
+
+audio.addEventListener('timeupdate', () => {
+    currentTimeEl.textContent = formatTime(audio.currentTime);
+    progress.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+});
+
+progressBar.addEventListener('click', (e) => {
+    const width = progressBar.clientWidth;
+    const clickX = e.offsetX;
+    audio.currentTime = (clickX / width) * audio.duration;
+});
+
+volumeSlider.addEventListener('input', () => {
+    audio.volume = volumeSlider.value;
+});
+
+speedSelect.addEventListener('change', () => {
+    audio.playbackRate = parseFloat(speedSelect.value);
+});
+
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins < 10 ? '0'+mins : mins}:${secs < 10 ? '0'+secs : secs}`;
+}
+
+document.querySelectorAll('.song').forEach(songEl => {
+    songEl.addEventListener('click', () => {
+        currentSongIndex = parseInt(songEl.dataset.index);
+        loadSong(currentSongIndex);
+        playSong();
+    });
+});
+
+playAllBtn.addEventListener('click', () => {
+    currentSongIndex = 0;
+    loadSong(currentSongIndex);
+    playSong();
+});
+
+toggleTheme.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+});
+
+loadSong(currentSongIndex);
+</script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB inter© - Dashboard Menu</title>
+  <link rel="stylesheet" href="index online style .css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    
+  </style>
+</head>
+<body>
+  
+  <!--  Top Left Buttons -->
+  <div class="top-left-buttons">
+    <button class="circle-btn" onclick="openDashboard()" title="Dashboard">
+      <i class="fas fa-gauge"></i>
+    </button>
+    <button class="circle-btn" onclick="toggleNotifDropdown()" title="Notifications">
+      <i class="fas fa-bell"></i>
+      <span id="notifBadge">0</span>
+    </button>
+    <div id="notifDropdown"><ul id="notifList"></ul></div>
+   <!-- Floating Chatroom Button -->
+<a href="chat.html">
+  <button id="floatingChatBtn" class="btn-main ripple">
+    <i class="fas fa-comments"></i> Chatroom
+  </button>
+</a>
+</a>
+  </div>
+
+  <!--  Top Right Button (Theme Toggle) -->
+  <div class="top-right-buttons">
+    <button id="themeToggleBtn" class="circle-btn" title="Toggle Theme">
+      <i id="themeIcon" class="fas fa-moon"></i>
+    </button>
+  </div>
+
+  <!--  Dashboard Menu -->
+  <div id="dashboardMenu" class="dashboard">
+    <span class="closeBtn" onclick="closeDashboard()">&times;</span>
+    <h2 id="welcomeMessage">Dashboard</h2>
+
+    <!-- Profile Picture -->
+    <div id="profilePictureContainer">
+      <img id="profilePicture" src="images/default-avatar.png" alt="Profile Picture">
+      <br>
+      <div class="spinner" id="uploadSpinner"></div>
+      <label for="updateProfileImage" class="custom-file-input">
+        <i class="fas fa-camera"></i> Upload Profile Picture
+      </label>
+      <input type="file" id="updateProfileImage" style="display:none;" accept="image/*">
+    </div>
+
+    <div id="dashboardInfo">
+      <p><b>Name:</b> <span id="dashName">Guest</span></p>
+      <p><b>Email:</b> <span id="dashEmail">Not provided</span></p>
+      <p><b>Phone:</b> <span id="dashPhone">Not provided</span></p>
+      <p><b>Last Login:</b> <span id="dashLastLogin">N/A</span></p>
+    </div>
+
+    <h3>Recent Activities</h3>
+    <ul id="dashActivities">
+      <li>Welcome to your dashboard!</li>
+    </ul>
+
+    <div class="dashboard-actions">
+      <button class="btn-logout ripple" onclick="logoutUser()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+      <button id="deleteAccountBtn" class="btn-delete ripple">
+        <i class="fas fa-user-times"></i> Delete Account
+      </button>
+      <br><br>
+      <button class="btn-creatnewaccount ripple" onclick="creatanotherUser()">
+        <i class="fas fa-sign-in-alt"></i> create another account 
+      </button>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay" onclick="closeDashboard()"></div>
+
+  <!-- Delete Modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <h3>Confirm Delete Account</h3>
+      <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+      <div class="modal-buttons">
+        <button id="cancelDelete" class="btn-cancel">Cancel</button>
+        <button id="confirmDelete" class="btn-confirm">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>Web Inter<sup>©</sup></h1>
+    <embed src="page video/Motivation.mp4">
+    <br><br>
+    <button class="btn-main ripple">Free Trial</button>
+    <hr style="border:2px solid red" width="50%">
+    <p>What do you want in this website?</p>
+    <div class="button-group">
+      <a href="music online.html"><button class="btn-category ripple"><i class="fas fa-music"></i> Music</button></a>
+      <a href="#"><button class="btn-category ripple"><i class="fas fa-film"></i> Movies</button></a>
+      <a href="#"><button class="btn-category ripple"><i class="fas fa-football-ball"></i> Sports</button></a>
+      <a href="#"><button class="btn-category ripple"><i class="fas fa-theater-masks"></i> Dramas</button></a>
+      <a href="word of pictures.html"><button class="btn-category ripple"><i class="fas fa-image"></i> Pictures</button></a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>WEB inter© 2023 - All Rights Reserved</p>
+  </div>
+
+  <!--  Toast -->
+  <div id="toast" class="toast"></div>
+
+<script>
+  //  Toggle Notification Dropdown
+  function toggleNotifDropdown() {
+    const dropdown = document.getElementById("notifDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+  document.addEventListener("click", function(event) {
+    const bellBtn = document.querySelector(".circle-btn:nth-child(2)");
+    const notifDropdown = document.getElementById("notifDropdown");
+    if (!notifDropdown.contains(event.target) && !bellBtn.contains(event.target)) {
+      notifDropdown.style.display = "none";
+    }
+  });
+
+  //  Dashboard
+  function openDashboard() {
+    document.getElementById('dashboardMenu').classList.add('open');
+    document.getElementById('overlay').style.display = 'block';
+    loadUserData();
+    showToast(" Welcome to your Dashboard!");
+  }
+  function closeDashboard() {
+    document.getElementById('dashboardMenu').classList.remove('open');
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  //  Load user data
+  function loadUserData() {
+    const user = JSON.parse(localStorage.getItem('userData')) || {};
+    const welcomeEl = document.getElementById('welcomeMessage');
+    const logoutBtn = document.querySelector(".btn-logout");
+    const deleteBtn = document.querySelector(".btn-delete");
+
+    welcomeEl.textContent = user.name ? `Welcome back, ${user.name}!` : 'Dashboard';
+    document.getElementById('dashName').textContent = user.name || 'Guest';
+    document.getElementById('dashEmail').textContent = user.email || 'Not provided';
+    document.getElementById('dashPhone').textContent = user.phone || 'Not provided';
+    document.getElementById('dashLastLogin').textContent = user.lastLogin || new Date().toLocaleString();
+
+    const profileImg = document.getElementById('profilePicture');
+    profileImg.src = user.profilePic || "images/default-avatar.png";
+
+    //  Hide/Show buttons based on login state
+    if (!user.name) {
+      logoutBtn.style.display = "none";
+      deleteBtn.style.display = "none";
+    } else {
+      logoutBtn.style.display = "inline-flex";
+      deleteBtn.style.display = "inline-flex";
+    }
+  }
+
+  //  Toast
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => { toast.classList.remove("show"); }, 3500);
+  }
+
+  //  Notifications
+  function addNotification(message, icon = "fas fa-bell") {
+    const notifList = document.getElementById("notifList");
+    const notifBadge = document.getElementById("notifBadge");
+    const li = document.createElement("li");
+    li.innerHTML = `<i class="${icon}"></i> ${message}`;
+    notifList.prepend(li);
+    let count = parseInt(notifBadge.textContent) || 0;
+    notifBadge.textContent = count + 1;
+    showToast(message);
+  }
+
+  // Demo notifications
+  setTimeout(() => addNotification(" Welcome back! New features added", "fas fa-star"), 5000);
+  setTimeout(() => addNotification(" You received a new message", "fas fa-envelope"), 10000);
+  setTimeout(() => addNotification(" System update available", "fas fa-bolt"), 15000);
+
+  //  Theme Toggle
+  const themeBtn = document.getElementById("themeToggleBtn");
+  const themeIcon = document.getElementById("themeIcon");
+  const body = document.body;
+
+  if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark-mode");
+    themeIcon.classList.remove("fa-moon");
+    themeIcon.classList.add("fa-sun");
+  }
+
+  themeBtn.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    if (body.classList.contains("dark-mode")) {
+      localStorage.setItem("theme", "dark");
+      themeIcon.classList.remove("fa-moon");
+      themeIcon.classList.add("fa-sun");
+    } else {
+      localStorage.setItem("theme", "light");
+      themeIcon.classList.remove("fa-sun");
+      themeIcon.classList.add("fa-moon");
+    }
+  });
+
+  //  Profile Picture Upload with Spinner + Toast
+  document.getElementById("updateProfileImage").addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      const spinner = document.getElementById("uploadSpinner");
+      const profileImg = document.getElementById("profilePicture");
+
+      spinner.style.display = "block";
+      profileImg.style.display = "none";
+      showToast(" Uploading profile picture...");
+
+      reader.onload = function(e) {
+        const imgSrc = e.target.result;
+
+        setTimeout(() => {
+          profileImg.src = imgSrc;
+          profileImg.style.display = "block";
+          spinner.style.display = "none";
+
+          const user = JSON.parse(localStorage.getItem("userData")) || {};
+          user.profilePic = imgSrc;
+          localStorage.setItem("userData", JSON.stringify(user));
+
+          showToast(" Profile picture uploaded successfully!");
+        }, 2000);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  });
+  
+  //createanother account 
+   function creatanotherUser() {
+    setTimeout(()=> window.location.href='sign in.html',100);
+  }
+
+  //  Logout User
+  function logoutUser() {
+    localStorage.removeItem("userData");
+    document.getElementById("profilePicture").src = "images/default-avatar.png";
+    showToast(" Logged out successfully!");
+    loadUserData();
+    setTimeout(()=> window.location.href='index online.html',1000);
+  }
+
+  //  Delete Account
+  const deleteBtn = document.getElementById("deleteAccountBtn");
+  const deleteModal = document.getElementById("deleteModal");
+  const cancelDelete = document.getElementById("cancelDelete");
+  const confirmDelete = document.getElementById("confirmDelete");
+
+  deleteBtn.addEventListener("click", () => {
+    deleteModal.style.display = "block";
+  });
+
+  cancelDelete.addEventListener("click", () => {
+    deleteModal.style.display = "none";
+  });
+
+  confirmDelete.addEventListener("click", () => {
+    localStorage.removeItem("userData");
+    document.getElementById("profilePicture").src = "images/default-avatar.png";
+    deleteModal.style.display = "none";
+    showToast(" Account deleted successfully!");
+    loadUserData();
+    setTimeout(()=> window.location.href='log in.html',1500);
+  });
+</script>
+</body>
+</html>

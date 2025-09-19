@@ -1,0 +1,60 @@
+body{
+    color: #f2f2f2;
+background: linear-gradient(45deg, #FCE38A, #f5ad4d, #fd81b5, #f74689, #ad5af3, #8a13ef );
+background-size:cover;
+background-repeat: no-repeat;
+animation: BackgroundGradient 5s ease infinite;  
+padding: 20px;
+border-radius: 0.5rem;
+height: 92vh;
+
+}
+
+h1{
+    color: #f2f2f2;
+background: linear-gradient(45deg, #FCE38A, black, #fd81b5, red, blue, orange);
+background-size: 50% ;
+animation:  BackgroundGradient 2s ease infinite;
+padding: 0px;
+border-radius: 0.5rem;
+width: 100%;
+color: transparent;
+background-clip: text;
+}
+
+@keyframes BackgroundGradient {
+0%{background-position:0% 50%;}
+50%{background-position: 100% 50% }
+100%{background-position: 0% 50%}
+
+}
+
+p{
+  text-align: center;
+}
+
+ul,li{
+    text-align: center;
+}
+
+button{
+text-align: right;
+border-block-end-color: red;
+background-color: green;
+color: whitesmoke;
+border-radius: 10pt;
+}
+
+button:hover{
+    animation: btun 0.2s ease infinite;
+    cursor: pointer;
+}
+
+@keyframes btun {
+    0%{box-shadow: 0 0 10px #000;}
+    50%{box-shadow: 0 0 10px #000;}
+}
+
+header{
+text-align: right;
+}

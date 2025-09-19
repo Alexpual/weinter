@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - WEB Inter©</title>
+
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="stylesheet" href="sign in.css">
+</head>
+<body>
+
+<div class="whole-page">
+<h1>Create account for "WEB Inter©"</h1>
+<form id="signupForm">
+  <!-- Profile Picture -->
+  <div class="profile-picture">
+    <img id="img" src="https://via.placeholder.com/120?text=Upload+Photo" alt="Profile Picture">
+    <label for="file-input" class="custom-file-input"><i class="fas fa-camera"></i> Upload Profile Picture</label>
+    <input type="file" id="file-input" style="display:none" accept="image/*">
+  </div>
+
+  <!-- Name -->
+  <div class="form-group">
+    <label for="firstname">First Name*</label>
+    <input type="text" id="firstname" placeholder="Enter your first name" required>
+  </div>
+  <div class="form-group">
+    <label for="surname">Surname*</label>
+    <input type="text" id="surname" placeholder="Enter your surname" required>
+  </div>
+
+  <!-- Email & Phone -->
+  <div class="form-group">
+    <label for="email">Email*</label>
+    <input type="email" id="email" placeholder="example@gmail.com" required>
+  </div>
+  <div class="form-group">
+    <label for="phone">Phone Number*</label>
+    <input type="tel" id="phone" placeholder="+265123456789" required>
+  </div>
+
+  <!-- Password -->
+  <div class="form-group">
+    <label for="password">Password*</label>
+    <input type="password" id="password" placeholder="Create a password" required>
+  </div>
+  <div class="form-group">
+    <label for="confirmPassword">Confirm Password*</label>
+    <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+  </div>
+
+  <button type="submit" class="submit-btn">Create Account</button>
+</form>
+
+<p style="text-align:center;margin-top:15px;">Already have an account? <a href="log in.html">Log in</a></p>
+
+<div class="notification" id="notification"></div>
+</div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+
+  // === Firebase Config (updated with your API key) ===
+  const firebaseConfig = {
+    apiKey: "AIzaSyCGFnZKJ6bnHSUzfy0DR50j46vZNIqolbc",
+    authDomain: "web-inter-9d4f2.firebaseapp.com",
+    databaseURL: "https://web-inter-9d4f2-default-rtdb.firebaseio.com",
+    projectId: "web-inter-9d4f2",
+    storageBucket: "web-inter-9d4f2.firebasestorage.app",
+    messagingSenderId: "639728360969",
+    appId: "1:639728360969:web:561577335986aacc1262d8"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+
+  const fileInput = document.getElementById('file-input');
+  const profileImg = document.getElementById('img');
+  fileInput.addEventListener('change', function() {
+    if(this.files && this.files[0]){
+      const reader = new FileReader();
+      reader.onload = function(e){ profileImg.src = e.target.result; }
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+
+  const notification = document.getElementById('notification');
+  function showNotification(msg,type='success'){
+    notification.textContent = msg;
+    notification.className='notification show';
+    if(type==='error') notification.classList.add('error');
+    setTimeout(()=> notification.className='notification',3000);
+  }
+
+  // === Form Submission ===
+  document.getElementById('signupForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const firstName = document.getElementById('firstname').value.trim();
+    const surname = document.getElementById('surname').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const profilePicture = profileImg.src;
+
+    if(password !== confirmPassword){
+      showNotification("Passwords do not match!", "error");
+      return;
+    }
+
+    const userData = { firstName, surname, email, phone, password, profilePicture };
+
+    // --- Save offline first ---
+    let users = JSON.parse(localStorage.getItem('webInterUsers') || '[]');
+    if(users.some(u=>u.email===email)){
+      showNotification("This email is already registered!", "error");
+      return;
+    }
+    users.push(userData);
+    localStorage.setItem('webInterUsers', JSON.stringify(users));
+
+    // --- Save to Firebase if online ---
+    if(navigator.onLine){
+      try{
+        const userCredential = await auth.createUserWithEmailAndPassword(email,password);
+        const uid = userCredential.user.uid;
+        await db.ref('users/'+uid).set(userData);
+        console.log('Saved online to Firebase');
+      }catch(err){
+        console.warn('Firebase error:',err.message);
+      }
+    }
+
+    showNotification("Account created successfully! Redirecting...", "success");
+    setTimeout(()=> window.location.href='log in.html',2000);
+  });
+});
+</script>
+</body>
+</html>

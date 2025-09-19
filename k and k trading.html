@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K & K Trading</title>
+  <!-- Font Awesome for Professional Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="k and k trading style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header glass">
+    <div class="container flex between">
+      <div class="flex center gap">
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1 class="logo-title">K & K Trading</h1>
+      </div>
+      <div class="flex gap">
+        <button class="btn btn-outline" id="signinBtn"><i class="fa fa-sign-in-alt"></i> Sign In</button>
+        <button class="btn" id="signupBtn"><i class="fa fa-user-plus"></i> Sign Up</button>
+        <button class="btn btn-green" id="sellBtn"><i class="fa fa-plus"></i> Sell Item</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <h2>Marketplace</h2>
+    <div id="itemsContainer" class="grid cards"></div>
+  </main>
+
+  <!-- Floating Dashboard Button -->
+  <button class="fab" id="dashboardBtn">
+    <i class="fa fa-user-circle"></i>
+    <span class="badge" id="dashboardBadge">0</span>
+  </button>
+
+  <!-- Floating Admin Button -->
+  <button class="fab fab-secondary" id="adminBtn">
+    <i class="fa fa-shield-alt"></i>
+    <span class="badge" id="adminBadge">0</span>
+  </button>
+
+  <!-- Dashboard Side Panel -->
+  <aside id="dashboardPanel" class="sidepanel glass">
+    <div class="panel-header flex between">
+      <h3>My Dashboard</h3>
+      <button class="btn-icon closePanel">&times;</button>
+    </div>
+    <div class="panel-content">
+      <div id="userProfile"></div>
+      <h4>My Listings</h4>
+      <div id="myListings"></div>
+      <h4>My Orders</h4>
+      <div id="myOrders"></div>
+      <h4>Messages</h4>
+      <div id="myMessages"></div>
+    </div>
+  </aside>
+
+  <!-- Admin Side Panel -->
+  <aside id="adminPanel" class="sidepanel glass">
+    <div class="panel-header flex between">
+      <h3>Admin Panel</h3>
+      <button class="btn-icon closePanel">&times;</button>
+    </div>
+    <div class="panel-content">
+      <h4>Pending Listings</h4>
+      <div id="pendingListings"></div>
+      <h4>Orders Overview</h4>
+      <div id="allOrders"></div>
+    </div>
+  </aside>
+
+  <!-- Lightbox for images -->
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" id="lightboxImg">
+  </div>
+
+  <!-- ===== Modals ===== -->
+  <!-- Sign In / Sign Up Modal -->
+  <div id="authModal" class="modal glass">
+    <div class="modalcard">
+      <span class="close closeModal">&times;</span>
+      <h3 id="authTitle">Sign In</h3>
+      <input type="email" id="authEmail" placeholder="Email">
+      <input type="password" id="authPassword" placeholder="Password">
+      <button class="btn" id="authSubmit">Continue</button>
+    </div>
+  </div>
+
+  <!-- Sell Item Modal -->
+  <div id="sellModal" class="modal glass">
+    <div class="modalcard">
+      <span class="close closeModal">&times;</span>
+      <h3>Sell Item</h3>
+      <input type="text" id="itemTitle" placeholder="Item Title">
+      <textarea id="itemDesc" placeholder="Description"></textarea>
+      <input type="text" id="itemPrice" placeholder="Price">
+      <input type="text" id="itemLocation" placeholder="Location">
+      <input type="file" id="itemImage" accept="image/*">
+      <button class="btn" id="submitItem">Upload Item</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJF1DotklpyVm4Tc-EumcBVoQqq84gu-Q",
+      authDomain: "k-ndi-k-trading.firebaseapp.com",
+      projectId: "k-ndi-k-trading",
+      storageBucket: "k-ndi-k-trading.firebasestorage.app",
+      messagingSenderId: "1065012243433",
+      appId: "1:1065012243433:web:12d1664d67a6d527c7f978",
+      measurementId: "G-ERY48YK33T"
+    };
+
+    // Init Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    console.log(" Firebase initialized for K & K Trading");
+  </script>
+
+  <!-- Your app logic -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+body{
+        background: linear-gradient(45deg,blue,green,orange,aqua,red);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-blend-mode: darken;
+        height: 95vh;
+        
+    }
+
+.reset-box{
+        justify-items: center;
+    }
+h1{
+    color: blue;
+}
+
+input{
+    text-align: center;
+}
+
+.input{
+    width: 100px;
+    border-radius: 20px;
+    height: 30px;
+}
+
+#timer{
+    font-weight: bold;
+}
+
+table{
+    background-color: rgba(85, 4, 4, 0.144);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+tr,td{
+    margin-top: 20px;
+}
+
+span{
+    color: #fff;
+}

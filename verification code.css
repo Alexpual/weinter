@@ -1,0 +1,50 @@
+body{
+        background: linear-gradient(45deg,blue,green,orange,aqua,red);
+        background-position: cover;
+        background-repeat: no-repeat;
+        height: 97.5vh;
+    }
+
+.reset-box{
+        justify-items: center;
+        text-align: center;
+    }
+
+h1{
+    color: blue;
+}
+
+input{
+    text-align: center;
+}
+
+.input{
+    width: 100px;
+    border-radius: 20px;
+    height: 30px;
+    justify-items: center;
+}
+
+#timer{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+p{
+    text-align: center;
+}
+
+table{
+    background-color: rgba(85, 4, 4, 0.144);
+    border-radius: 10px;
+    margin: 20px;
+}
+
+tr,td{
+    margin-top: 20px;
+}
+
+span{
+    color: #fff;
+}

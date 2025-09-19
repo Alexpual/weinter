@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Our Company</title>
+    <link rel="stylesheet" href="about style.css" >
+</head>
+<body>
+    <div class="head">
+        <details>
+            <summary>menu</summary>
+        
+            <h3>Services</h3>
+            <ol type="1" class="li">
+                <li class="li">Web Development</li>
+                <li class="li">Graphical Design</li>
+                <li class="li">Digital Marketing</li>
+            </ol>
+        </details>
+        <h1>ABOUT THIS WEB</h1>
+        <nav>
+            <ul>
+                <li><a href="index online.html">
+                    <button>home</button>
+                </a></li>
+                <li><a href="index online.html">
+                    <button>back</button>
+                </a></li>
+                <li><a href="contact us.html">
+                    <button>contacts</button>
+                </a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="company-information">
+        <h1><u>Company Information</u></h1>
+        <h3>Definition of Terms:</h3>
+        <ol>
+            <li>The process of building and maintaining website.</li>
+            <li>The art of communication ideas through visual content.</li>
+            <li>The promotion of products or services using digital channel.</li>
+        </ol>
+    </div>
+    
+    <div class="steps_to_get_stated">
+        <div class="img">
+            <img src="pic2.jpg" alt="Getting started" width="120" height="200">
+        </div>
+        <h1><u>Steps to Get Started:</u></h1>
+        <ol type="1">
+            <li>Contact us to discuss your project on
+                <span style="color: rgb(18, 113, 255);">
+                    <u>+265990828040</u>
+                </span> 
+                on <img src="phone.JPG" alt="Phone" width="20"> call or     
+                <img src="whatsapp.JPG" alt="WhatsApp" width="20"> what'sapp or     
+                <img src="email.JPG" alt="Email" width="20">
+                Email <a href="mailto:alexeliaspaul@gmail.com">alexeliaspaul@gmail.com</a>
+            </li>
+            <li>We will provide a custom quote and timeline.</li>
+            <li>Our team will work with you to deliver the project</li>
+        </ol>
+    </div>
+    
+    <div class="benifit_of_working_wiht_us">
+        <div class="img">
+            <img src="pic3.jpg" alt="Benefits" width="120" height="200">
+        </div>
+        <h1><u>Benefits of Working with US:</u></h1>
+        <ol>
+            <li>Personalized services and attention to details</li>
+            <li>Expertise in web development, graphical design, and digital marketing</li>
+            <li>Competitive pricing and flexible payment plans</li>
+        </ol>
+    </div>
+    
+    <h1>Our Team</h1>
+    
+    <div class="alex">
+        <main>
+            <h1><a href="Alepaul pic.jpg"><img src="Alepaul pic/Alepaul pic.jpg" alt="Alex Paul" width="200" height="200"></a></h1>
+            <h2 style="color: blue;">ALEX PAUL</h2>
+        </main>
+        <p>My name is Alex Paul I am the owner of this website.<br>
+        and it was not my own knowledge to come up with website like this one but with the knowledge from my teacher
+        sir
+        <span style="color: blue"><b>"THEODORE SAIKOND"</b>
+        </span> He is responsible because he sacrifices his time to teach me how I can develop a website and I am very happy today to develop my first website like this one.</p>
+    </div>
+    
+    <div class="theodore_saikond">
+        <main>
+            <h1><a href="Theodore pic/Theodore pic.jpg"><img src="Theodore pic/Theodore pic.jpg" alt="Theodore Saikond" width="200" height="200"></a></h1>
+            <h2>THEODORE SAIKOND</h2>
+        </main>
+        <p>
+            Theodore Saikond is from Zambia. He did his degree of computer science at Chanco in Malawi. In addition to that he has also a diploma on computer engineering. He is the owner of the owner of <a href="https://www.wethem.org">www.wethem.org</a> 
+            if you want to get contact with THEODORE SAIKOND you call or text on whatsapp on <span style="color: blue"><u>+260 96 2285185</u></span>
+        </p>
+        <br>
+        <p>If you want to learn more about computer in site like:</p>
+        <ol type="1">
+            <li>ICT</li>
+            <li>WEBSITE DEVELOPMENT</li>
+            <li>SOFTWARE DEVELOPMENT</li>
+            <li>COMPUTER ENGINEERING</li>
+            <li>CYBER SECURITY</li>
+            <li>CCTV INSTALLATION</li>
+        </ol>
+    </div>
+
+    <a href="#" class="back-to-top">↑</a>
+
+    <script>
+        // Back to top button functionality
+        const backToTopButton = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Add subtle animation to elements when they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all sections for animation
+        document.querySelectorAll('.company-information, .steps_to_get_stated, .benifit_of_working_wiht_us, .alex, .theodore_saikond').forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

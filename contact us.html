@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Msika E-commerce</title>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Inline CSS -->
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    .contact-container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    .contact-header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #007bff, #00bcd4);
+      color: #fff;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    .contact-header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+    .navigation-buttons button {
+      background-color: #fff;
+      border: none;
+      color: #007bff;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .navigation-buttons button:hover {
+      background-color: #007bff;
+      color: #fff;
+    }
+    .contact-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .contact-form, .contact-info {
+      flex: 1 1 45%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .contact-form h2, .contact-info h2 {
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .form-group select {
+      background-color: #fff;
+    }
+    .submit-btn {
+      background: #007bff;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+    .loading-spinner i {
+      margin-right: 8px;
+    }
+    #formMessages p {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    #formMessages .error {
+      color: red;
+    }
+    #formMessages .success {
+      color: green;
+    }
+    .map-section {
+      margin-top: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 10px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      background: #007bff;
+      color: #fff;
+      border-radius: 10px;
+    }
+    .go-top {
+      display: inline-block;
+      margin-top: 10px;
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contact-container">
+
+    <!-- Header -->
+    <div class="contact-header">
+      <h1>Get in Touch</h1>
+      <p>We would love to hear from you! Whether you have a question about products, pricing, or anything else, our team is ready to answer all your questions.</p>
+      <div class="navigation-buttons">
+        <a href="about.html"><button>Back</button></a>
+        <a href="index.html"><button>Home</button></a>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-content">
+      <div class="contact-form">
+        <h2>Send Us a Message</h2>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="name">Full Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject <span class="required">*</span></label>
+            <select id="subject" name="subject" required>
+              <option value="" disabled selected>Select a subject</option>
+              <option value="order">Order Inquiry</option>
+              <option value="shipping">Shipping Information</option>
+              <option value="return">Returns & Refunds</option>
+              <option value="product">Product Questions</option>
+              <option value="feedback">Feedback</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Your Message <span class="required">*</span></label>
+            <textarea id="message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span class="btn-text">Send Message</span>
+            <span class="loading-spinner hidden">
+              <i class="fas fa-spinner fa-spin"></i> Sending...
+            </span>
+          </button>
+
+          <div id="formMessages"></div>
+        </form>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <h2>Contact Information</h2>
+        <p><i class="fas fa-map-marker-alt"></i> Malawi, Thyolo, Bvumbwe, Boid prot 3</p>
+        <p><i class="fas fa-phone-alt"></i> <a href="tel:+265990828040">+265 990 828 040</a></p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:alexeliaspaul85@gmail.com">alexeliaspaul85@gmail.com</a></p>
+      </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="map-section">
+      <h2>Find Us on Map</h2>
+      <div class="map-container">
+        <iframe src="https://maps.google.com/maps?q=-15.9467209,35.1143857&z=15&output=embed" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Msika E-commerce. All rights reserved.</p>
+      <a href="#top" class="go-top">Go to Top</a>
+    </footer>
+
+  </div>
+
+  <!-- EmailJS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+  (function() {
+    emailjs.init("ZGCWBCZLr7eQw3wfi"); // Your Public Key
+  })();
+
+  const form = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formMessages = document.getElementById('formMessages');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    formMessages.innerHTML = '';
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const subject = form.subject.value;
+    const message = form.message.value.trim();
+
+    // Validation
+    if (!name || !email || !subject || !message) {
+      formMessages.innerHTML = '<p class="error">Please fill in all required fields.</p>';
+      return;
+    }
+
+    const emailRegex = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      formMessages.innerHTML = '<p class="error">Invalid email address.</p>';
+      return;
+    }
+
+    // Show loading spinner
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Sending...</span>';
+
+    emailjs.send("service_zy8vpnk", "template_nxl1zol", {
+      name: name,
+      email: email,
+      subject: subject,
+      message: message
+    }).then(() => {
+      // Success message
+      formMessages.innerHTML = '<p class="success"><i class="fas fa-check-circle" style="color:green;font-size:18px;"></i> Message sent successfully!</p>';
+
+      // Wait 2.5 seconds then redirect
+      setTimeout(() => {
+        window.location.href = "thank-you.html";
+      }, 2500);
+    }).catch((error) => {
+      console.error('Error:', error);
+      formMessages.innerHTML = '<p class="error">Failed to send message. Please try again later.</p>';
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span class="btn-text">Send Message</span>';
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+:root{
+  --bg: #f5f7fb;
+  --panel: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --brand: #4f46e5;
+  --accent: #22c55e;
+  --border: #e5e7eb;
+  --bubble-me: #dbeafe;
+  --bubble-other: #e7f8e9;
+}
+
+body.dark{
+  --bg: #0f172a;
+  --panel: #111827;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --brand: #6366f1;
+  --accent: #22c55e;
+  --border: #1f2937;
+  --bubble-me: #1e293b;
+  --bubble-other: #062e12;
+}
+
+*{box-sizing: border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  background: url('messagewallpaper.jpg') center  center no-repeat;
+  background-size: cover;
+  color: var(--text);
+}
+
+/* Layout */
+.app{display:flex; flex-direction:column; height:100vh;}
+
+/* Topbar */
+.topbar{
+  height:64px; display:flex; align-items:center; justify-content:space-between;
+  padding: 0 16px; background: var(--panel); border-bottom:1px solid var(--border); gap:12px;
+}
+.brand{display:flex; align-items:center; gap:10px;}
+.brand .logo{font-size:22px}
+.brand h1{font-size:18px; margin:0;}
+
+.topbar-right{display:flex; align-items:center; gap:12px; position: relative;}
+.ghost-btn{
+  background: transparent; border:1px solid var(--border); color: var(--text);
+  padding:8px 12px; border-radius:10px; cursor:pointer;
+}
+.ghost-btn:hover{border-color: var(--brand);}
+
+.online{position:relative; display:flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid var(--border); border-radius:999px;}
+.online .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+.online:hover .online-list{opacity:1; transform:translateY(0); pointer-events:auto}
+.online-list{
+  position:absolute; top:44px; right:0; width:220px; max-height:280px; overflow:auto;
+  background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  opacity:0; transform: translateY(8px); transition:.2s ease; pointer-events:none; z-index:5;
+}
+
+/* Theme switch */
+.theme-toggle{display:flex; align-items:center;}
+.switch{
+  display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+  border:1px solid var(--border); border-radius:999px; padding:6px 10px; user-select:none;
+}
+.switch .sun,.switch .moon{font-size:14px}
+
+/* Main content */
+.main{
+  display:grid; 
+  grid-template-columns: 1fr 280px; 
+  gap:16px; 
+  padding:16px;
+  height:calc(100vh - 64px);
+  
+}
+.chat{
+  border:0; 
+  border-radius:16px;
+  display:flex; 
+  flex-direction:column;
+  overflow:hidden;
+}
+.chat-header{
+  padding:12px 16px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.me-line{font-size:14px}
+.room-line{font-size:12px; color: var(--muted)}
+
+.messages{
+  flex:1; 
+  overflow-y:auto; 
+  padding:18px; 
+  display:flex; 
+  flex-direction:column; 
+  gap:10px;
+  scroll-behavior:smooth;
+}
+.msg{
+  max-width: 70%; padding:10px 12px; border-radius:12px;
+  display:flex; flex-direction:column; gap:6px; line-height:1.35;
+  border:1px solid var(--border);
+}
+.msg .meta{font-size:11px; color: var(--muted)}
+.msg.me{margin-left:auto; background: var(--bubble-me);}
+.msg.other{margin-right:auto; background: var(--bubble-other);}
+
+.composer{
+  display:flex; gap:8px; padding:12px; border-top:1px solid var(--border); background: var(--panel);
+}
+.icon-btn{
+  width:40px; height:40px; border-radius:10px; border:1px solid var(--border); background:transparent; cursor:pointer;
+}
+.icon-btn:hover{border-color: var(--brand)}
+.send-btn{
+  background: var(--brand); color:#fff; border:none; padding:10px 16px; border-radius:10px; cursor:pointer; font-weight:600;
+}
+.send-btn:hover{filter:brightness(1.05)}
+#messageInput{
+  flex:1; border:1px solid var(--border); background:transparent; color:var(--text);
+  border-radius:10px; padding:10px 12px; outline:none;
+}
+#messageInput::placeholder{color: var(--muted)}
+
+/* Emoji panel */
+.emoji-panel{
+  position:absolute; bottom:64px; left:12px; width:260px; max-height:220px; overflow:auto;
+  background: var(--panel); border:1px solid var(--border); border-radius:12px; padding:8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.15); display:none; z-index:10;
+}
+.emoji-grid{
+  display:grid; grid-template-columns: repeat(8, 1fr); gap:6px;
+}
+.emoji-btn{
+  font-size:20px; background:transparent; border:none; cursor:pointer; line-height:1.2; padding:6px; border-radius:8px;
+}
+.emoji-btn:hover{background:rgba(0,0,0,.06)}
+
+/* Aside */
+.aside{
+  background: var(--panel); border:1px solid var(--border); border-radius:16px; padding:16px; overflow:auto;
+}
+.aside h3{margin:0 0 10px 0; font-size:15px}
+#userList{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+#userList li{display:flex; align-items:center; gap:8px; font-size:14px}
+#userList .dot{width:8px;height:8px;background:var(--accent);border-radius:50%}
+
+/* Responsive */
+@media (max-width: 900px){
+  .main{grid-template-columns: 1fr}
+  .aside{display:none}
+}

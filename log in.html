@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Inter© - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="log in.css">
+</head>
+<body>
+<header>
+  <a href="index.html"><button><i class="fas fa-home"></i> Home</button></a>
+  <a href="index.html"><button><i class="fas fa-arrow-left"></i> Back</button></a>
+</header>
+
+<div class="whole-page">
+  <h1>WEB INTER©</h1>
+  <div class="container">
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Email or Phone</label>
+        <input type="text" id="username" placeholder="example@gmail.com or +265123456789" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <span class="password-toggle" id="passwordToggle"><i class="far fa-eye"></i></span>
+      </div>
+      <div class="remember-forgot">
+        <div class="remember-me">
+          <input type="checkbox" id="rememberMe">
+          <label for="rememberMe"><i class="fas fa-check-square"></i> Remember me</label>
+        </div>
+        <a href="forgot password.html" class="forgot-password"><i class="fas fa-key"></i> Forgot Password?</a>
+      </div>
+      <button type="submit" class="login-btn">Log In (Offline)</button>
+    </form>
+
+    <center>
+      <p>I don’t have an account?
+        <a href="sign in.html"><button class="create-new-account-btn">Create new account</button></a>
+      </p>
+    </center>
+
+    <hr>
+    <h3 style="text-align:center;">Or Login with Firebase</h3>
+    <div class="social-btn">
+      <button type="button" id="googleLoginBtn"><i class="fab fa-google"></i> Google</button>
+    </div>
+  </div>
+</div>
+
+<div class="notification" id="notification"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // === Firebase Config (updated with your key) ===
+  const firebaseConfig = {
+    apiKey: "AIzaSyCGFnZKJ6bnHSUzfy0DR50j46vZNIqolbc",
+    authDomain: "web-inter-9d4f2.firebaseapp.com",
+    projectId: "web-inter-9d4f2",
+    storageBucket: "web-inter-9d4f2.firebasestorage.app",
+    messagingSenderId: "639728360969",
+    appId: "1:639728360969:web:561577335986aacc1262d8"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.database();
+
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const rememberMe = document.getElementById('rememberMe');
+  const notification = document.getElementById('notification');
+
+  // Load saved credentials
+  const savedUsername = localStorage.getItem('savedUsername');
+  const savedPassword = localStorage.getItem('savedPassword');
+  const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
+  if(savedUsername) usernameInput.value = savedUsername;
+  if(savedPassword && savedRememberMe) {
+    passwordInput.value = savedPassword;
+    rememberMe.checked = true;
+  }
+
+  // Notification helper
+  function showNotification(msg,type='success'){
+    notification.textContent = msg;
+    notification.classList.add('show');
+    notification.style.background = type==='error' ? '#e74c3c' : '#2ecc71';
+    setTimeout(()=> notification.classList.remove('show'),3000);
+  }
+
+  // === Login Form Handler ===
+  document.getElementById('loginForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const input = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    if(!input || !password){
+      showNotification('Please fill in all fields','error');
+      return;
+    }
+
+    // Online Firebase login
+    if (navigator.onLine) {
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(input, password);
+        const uid = userCredential.user.uid;
+
+        // Get user info from database
+        const snapshot = await db.ref('users/' + uid).once('value');
+        const user = snapshot.val();
+
+        // Save logged-in info
+        localStorage.setItem('userData', JSON.stringify({
+          name: (user.firstName || '') + " " + (user.surname || ''),
+          email: user.email,
+          profilePic: user.profilePicture || "default-avatar.png"
+        }));
+
+        // Remember me
+        if(rememberMe.checked){
+          localStorage.setItem('savedUsername', input);
+          localStorage.setItem('savedPassword', password);
+          localStorage.setItem('rememberMe','true');
+        } else {
+          localStorage.removeItem('savedUsername');
+          localStorage.removeItem('savedPassword');
+          localStorage.setItem('rememberMe','false');
+        }
+
+        showNotification('Login successful! Redirecting...','success');
+        setTimeout(()=> window.location.href='chatroom.html',1500);
+        return;
+      } catch(err){
+        console.warn("Firebase login failed:", err.message);
+        // fallback to offline login
+      }
+    }
+
+    // Offline fallback
+    const users = JSON.parse(localStorage.getItem('webInterUsers') || '[]');
+    const user = users.find(u => u.email === input && u.password === password);
+
+    if(user){
+      localStorage.setItem('userData', JSON.stringify({
+        name: (user.firstName || '') + " " + (user.surname || ''),
+        email: user.email,
+        profilePic: user.profilePicture || "default-avatar.png"
+      }));
+
+      showNotification('Offline login successful! Redirecting...','success');
+      setTimeout(()=> window.location.href='index online.html',1500);
+    } else {
+      showNotification('Invalid email or password','error');
+    }
+  });
+});
+</script>
+</body>
+</html>

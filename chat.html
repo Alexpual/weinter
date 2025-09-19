@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatroom with API</title>
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3a0ca3;
+      --light-color: #f8f9fa;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background:linear-gradient(45deg,red,blue,green,black,yellow,orange);
+
+    }
+
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 60%;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 10px;
+      word-wrap: break-word;
+    }
+
+    .sender {
+      background-color: var(--primary-color);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+    }
+
+    .receiver {
+      background-color: var(--secondary-color);
+      color: white;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-container {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    .input-container input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .input-container button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--primary-color);
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .input-container button:hover {
+      background-color: var(--secondary-color);
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container" id="chatContainer"></div>
+
+<div class="input-container">
+  <input type="text" id="messageInput" placeholder="Type a message...">
+  <button id="sendBtn">Send</button>
+</div>
+
+<script>
+  const chatContainer = document.getElementById('chatContainer');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  const API_KEY = "YOUR_API_KEY_HERE"; // Replace with your actual API key
+  const API_URL = "https://your-api-endpoint.com/chat"; // Replace with your actual endpoint
+
+  function addMessage(content, type = 'sender') {
+    const msg = document.createElement('div');
+    msg.classList.add('message', type);
+    msg.textContent = content;
+    chatContainer.appendChild(msg);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  async function sendMessageToAPI(message) {
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`
+        },
+        body: JSON.stringify({ message: message })
+      });
+
+      const data = await response.json();
+      return data.reply; // Adjust if your API returns a different field
+    } catch (error) {
+      console.error("API Error:", error);
+      return "Error: Unable to get response.";
+    }
+  }
+
+  async function handleSend() {
+    const message = messageInput.value.trim();
+    if (!message) return;
+
+    addMessage(message, 'sender');
+    messageInput.value = '';
+
+    // Send to API
+    const reply = await sendMessageToAPI(message);
+    addMessage(reply, 'receiver');
+  }
+
+  sendBtn.addEventListener('click', handleSend);
+  messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSend();
+  });
+</script>
+
+</body>
+</html>

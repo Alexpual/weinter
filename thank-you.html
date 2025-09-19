@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You - Msika E-commerce</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #007bff, #00bcd4);
+    color: #fff;
+    text-align: center;
+  }
+  .thank-you-box {
+    background: #fff;
+    color: #333;
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    animation: fadeInUp 0.8s ease-in-out;
+  }
+  @keyframes fadeInUp {
+    from {opacity: 0; transform: translateY(30px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+  .thank-you-box i {
+    font-size: 60px;
+    color: #28a745;
+    margin-bottom: 20px;
+    animation: scaleIn 0.8s ease-in-out;
+  }
+  @keyframes scaleIn {
+    from {transform: scale(0.5); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  .btn-home {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #007bff;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .btn-home:hover {
+    background: #0056b3;
+  }
+</style>
+</head>
+<body>
+  <div class="thank-you-box">
+    <i class="fas fa-check-circle"></i>
+    <h1>Thank You!</h1>
+    <p>Your message has been sent successfully. We’ll get back to you soon.</p>
+    <a href="index online.html" class="btn-home">Back to Home</a>
+  </div>
+</body>
+</html>

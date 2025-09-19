@@ -1,0 +1,54 @@
+body{
+    background: linear-gradient(45deg,red,blue,green,orange,aqua,black);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    height: 97.5vh;
+}
+
+h1{
+    text-align: center;
+    font-size: 30pt;
+    padding: 0;
+}
+
+p{
+    text-align: center;
+}
+
+button{
+    border: 0;
+    list-style: none;
+    font-size: 30pt;
+    border-radius: 30pt;
+    font-weight: bolder;
+    background: linear-gradient(45deg,red,green,black,blue,purple,aqua,orange);
+    background-position:center ;
+    background-size: 150vh;
+    color: transparent;
+    background-clip: text;
+    animation: button 2s ease infinite;
+}
+
+@keyframes button {
+    0%{background-position:0% 60%,;}
+  50%{background-position: 100% 0% }
+  100%{background-position: 0% 60%}
+}
+
+button:hover{
+    background: linear-gradient(45deg,purple,aqua,orange);
+    color: black;
+    animation: buttonhover .2s linear infinite;
+}
+
+@keyframes buttonhover {
+    0%{box-shadow: 0 0 50px red;}
+    50%{box-shadow: 0 0 50px orange;}
+    100%{box-shadow: 0 0 50px aqua;}
+}
+.btn{
+    text-align: center;
+    justify-items: center;
+}
