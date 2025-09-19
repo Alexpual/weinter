@@ -9,7 +9,7 @@
     --glass-blur:10px;
   }
   body.light{
-    --bg: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url(art/ale.jpg) ;
+    --bg: linear-gradient(rgba(0,0,0,0.2),rgba(0,0,0,0.2)),url(pic2.jpg) ;
     --panel:rgba(255,255,255,0.7);
     --panel-strong:rgba(255,255,255,0.9);
     --text:#1a1a1a;
